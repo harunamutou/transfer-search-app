@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 3000;
 
 // Discord Webhook
-const DISCORD_ACCESS_LOG = "https://discord.com/api/webhooks/1458546755468660982/YTlFt_XZIhm4k01U8LLdF2wEAkq2VYCmQH--BMmENQKEMg1fXh0W0eJDH1mE88g_Z7Jf";
+const DISCORD_ACCESS_LOG = "https://discord.com/api/webhooks/1458546755468660982/YTlFt_XZIhm4k01U8LLdF2wEAk2VYCmQH--BMmENQKEMg1fXh0W0eJDH1mE88g_Z7Jf";
 const DISCORD_SEARCH_LOG = "https://discord.com/api/webhooks/1458559479531573383/clnGsN1RzEesGLtsYWRApXlKxBY1ON5vuSVT9nJUxIPrs5bka8ADZPKxGT4K5isUIfdY";
 const DISCORD_ADDLINE_LOG = "https://discord.com/api/webhooks/1458559343065829377/9pf_8WeNhGb9XzVoMJTmoj9YTy7-imKELnzFxMTayIv_hUTlM-gA19_3eGMYKdOEO6w5";
 const DISCORD_ERROR_LOG = "https://discord.com/api/webhooks/1458547135472467998/2Ces9SugoRXoJgyC-WavJ3tmNmLy90Z5xIhvBLWcwkN_LZnRjLfxsTf5dOR3eHOX8lMO";
