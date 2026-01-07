@@ -17,7 +17,7 @@ const DISCORD_ADDLINE_LOG = process.env.DISCORD_ADDLINE_LOG;
 const DISCORD_ERROR_LOG = process.env.DISCORD_ERROR_LOG;
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-// 駅データリスト（サーバー起動時は空）
+// 駅データリスト（起動時は空）
 let stationData = [];
 
 // Discord送信用
