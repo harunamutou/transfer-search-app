@@ -38,8 +38,15 @@ async function loadStations() {
   try {
     const url = `https://script.google.com/macros/s/${SPREADSHEET_ID}/exec?action=getStations`;
     const res = await fetch(url);
-    stationData = await res.json();
+    const data = await res.json();
+    // 駅名トリム + distance 数値化
+    stationData = data.map(s => ({
+      line: s.line.trim(),
+      station: s.station.trim(),
+      distance: Number(s.distance)
+    }));
     await sendDiscordLog(DISCORD_ACCESS_LOG, `駅データロード完了: ${stationData.length}件`);
+    console.log(`駅データロード完了: ${stationData.length}件`);
   } catch (err) {
     await sendDiscordLog(DISCORD_ERROR_LOG, `loadStationsエラー: ${err.message}`);
     console.error(err);
@@ -50,20 +57,21 @@ async function loadStations() {
 function searchRoute(start, end, via = []) {
   try {
     const path = [start, ...via.filter(Boolean), end];
+
     let totalDistance = 0;
 
     for (let i = 0; i < path.length - 1; i++) {
-      const from = stationData.find(s => s.station === path[i]);
-      const to = stationData.find(s => s.station === path[i + 1]);
+      const from = stationData.find(s => s.station === path[i].trim());
+      const to   = stationData.find(s => s.station === path[i + 1].trim());
       if (!from || !to) throw new Error(`駅データ不足: ${path[i]} → ${path[i+1]}`);
       totalDistance += Math.abs(to.distance - from.distance);
     }
 
     const fare = calculateFare(totalDistance);
-    return {path, distance: totalDistance, fare};
+    return { path, distance: totalDistance, fare };
   } catch (err) {
     sendDiscordLog(DISCORD_ERROR_LOG, `searchRouteエラー: ${err.message}`);
-    return {error: err.message};
+    return { error: err.message };
   }
 }
 
@@ -109,9 +117,11 @@ app.get("/", (req, res) => {
     </div>
     <script>
       async function search() {
-        const start = document.getElementById("start").value;
-        const end = document.getElementById("end").value;
-        const via = [document.getElementById("via1").value, document.getElementById("via2").value, document.getElementById("via3").value].filter(Boolean);
+        const start = document.getElementById("start").value.trim();
+        const end = document.getElementById("end").value.trim();
+        const via = [document.getElementById("via1").value,
+                     document.getElementById("via2").value,
+                     document.getElementById("via3").value].filter(Boolean);
         const res = await fetch("/search", {
           method:"POST",
           headers:{"Content-Type":"application/json"},
